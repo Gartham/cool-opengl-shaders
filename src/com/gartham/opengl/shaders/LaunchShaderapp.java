@@ -1,4 +1,4 @@
-package com.gartham.templates.jogl;
+package com.gartham.opengl.shaders;
 
 import javax.swing.JFrame;
 
@@ -7,7 +7,7 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class LaunchTemplate {
+public class LaunchShaderapp {
 	private static final int DEFAULT_WIDTH = 1200, DEFAULT_HEIGHT = 800;
 
 	public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class LaunchTemplate {
 		// TODO Request GL instance capabilities here.
 
 		GLCanvas canvas = new GLCanvas(capabilities);
-		canvas.addGLEventListener(new TemplateEventListener());// Performs rendering.
+		canvas.addGLEventListener(new ShaderappEventListener());// Performs rendering.
 
 		JFrame window = new JFrame();
 		window.setTitle("[WINDOW TITLE]");
