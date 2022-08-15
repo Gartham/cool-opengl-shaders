@@ -17,6 +17,6 @@ void main()
 	outputColor = vec4(hsl2rgb(vec3(
 		(sin(time/200000f) + 1) * 180,
 		.5,
-		round(sin((pos.x + 1 + time / 1000f) * 20)))/2f
-	), 1);
+		round(sin((pos.x + 1 + time / 1000f) * 20)) / 2f
+	)), 1);
 }
