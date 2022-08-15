@@ -23,8 +23,10 @@ public final class ShaderappEventListener implements GLEventListener {
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		int size = Math.min(width, height);
-		drawable.getGL().glViewport(0, 0, size, size);
+		if (width < height)
+			drawable.getGL().glViewport(0, (height - width) / 2, width, width);
+		else
+			drawable.getGL().glViewport((width - height) / 2, 0, height, height);
 	}
 
 	@Override
