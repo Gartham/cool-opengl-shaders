@@ -2,6 +2,8 @@ package com.gartham.opengl.shaders;
 
 import javax.swing.JFrame;
 
+import org.alixia.javalibrary.parsers.cli.CLIParams;
+
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -11,15 +13,18 @@ public class LaunchShaderapp {
 	private static final int DEFAULT_WIDTH = 1200, DEFAULT_HEIGHT = 800;
 
 	public static void main(String[] args) {
+		CLIParams params = new CLIParams(args);
+		String shaderPath = params.readString("default.fs", "--shader", "-s");
+
 		GLProfile prof = GLProfile.get(GLProfile.GL4);
 		GLCapabilities capabilities = new GLCapabilities(prof);
 		// TODO Request GL instance capabilities here.
 
 		GLCanvas canvas = new GLCanvas(capabilities);
-		canvas.addGLEventListener(new ShaderappEventListener());// Performs rendering.
+		canvas.addGLEventListener(new ShaderappEventListener(shaderPath));// Performs rendering.
 
 		JFrame window = new JFrame();
-		window.setTitle("[WINDOW TITLE]");
+		window.setTitle("Cool Shaders");
 		window.getContentPane().add(canvas);
 
 		window.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);

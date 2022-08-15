@@ -1,9 +1,19 @@
 package com.gartham.opengl.shaders;
 
+import java.io.InputStream;
+
+import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 
 public final class ShaderappEventListener implements GLEventListener {
+
+	private final InputStream input;
+
+	public ShaderappEventListener(String shaderpath) {
+		input = ShaderappEventListener.class.getResourceAsStream(shaderpath);
+	}
+
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		drawable.getGL().glViewport(0, 0, width, height);
@@ -11,7 +21,7 @@ public final class ShaderappEventListener implements GLEventListener {
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
+		GL4 gl = drawable.getGL().getGL4();
 
 	}
 
