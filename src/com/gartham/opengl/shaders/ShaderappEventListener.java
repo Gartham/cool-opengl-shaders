@@ -10,7 +10,6 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.util.FPSAnimator;
 
 public final class ShaderappEventListener implements GLEventListener {
 
@@ -24,7 +23,8 @@ public final class ShaderappEventListener implements GLEventListener {
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		drawable.getGL().glViewport(0, 0, width, height);
+		int size = Math.min(width, height);
+		drawable.getGL().glViewport(0, 0, size, size);
 	}
 
 	@Override
