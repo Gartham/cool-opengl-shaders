@@ -31,7 +31,7 @@ public class LaunchShaderapp {
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
-		window.setResizable(false);
+//		window.setResizable(false);
 		canvas.requestFocusInWindow();
 
 		// Include an FPS-based animator, if desired.
