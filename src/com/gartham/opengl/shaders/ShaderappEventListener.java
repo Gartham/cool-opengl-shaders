@@ -1,5 +1,6 @@
 package com.gartham.opengl.shaders;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -10,7 +11,10 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 public final class ShaderappEventListener implements GLEventListener {
 
@@ -68,6 +72,16 @@ public final class ShaderappEventListener implements GLEventListener {
 
 		gl.glVertexAttribPointer(0, 2, GL.GL_FLOAT, false, 0, 0);
 		gl.glEnableVertexAttribArray(0);
+		
+		Texture texture;
+		try {
+			texture = TextureIO.newTexture(getClass().getResourceAsStream("image.png"), false, "png");
+		} catch (GLException | IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+			return;
+		}
+		texture.bind(gl);
 	}
 
 	@Override
