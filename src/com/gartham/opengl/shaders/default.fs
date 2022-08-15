@@ -6,6 +6,7 @@ in vec3 pos;
 uniform float time;
 
 uniform float sphereX = .3f, sphereY = .4f, sphereZ = 3, r = .3f;
+uniform vec3 lightSource = vec3(-1, 1, 0);
 
 void main()
 {
@@ -23,13 +24,14 @@ void main()
 		
 		float firstSol = 3 + chunk / 2, secondSol = 3 - chunk / 2;
 		
-		float endResult;
-		if (firstSol < 0)
-			endResult = secondSol;
+		float intersectionT;
+		if (firstSol < secondSol)
+			intersectionT = firstSol;
 		else
-			endResult = firstSol;
-			
-		float val = 1f / endResult;
-		outputColor = vec4(val, val, val + .4f, 1);
+			intersectionT = secondSol;
+		
+		vec3 intersectionPoint = vec3(x, y, intersectionT);
+		
+		outputColor = vec4(vec3(1, 1, 1) - (lightSource - intersectionPoint), 1);
 	}
 }
