@@ -1,7 +1,12 @@
 package com.gartham.opengl.shaders;
 
 import java.io.InputStream;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
+import org.alixia.javalibrary.JavaTools;
+
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
@@ -9,6 +14,7 @@ import com.jogamp.opengl.GLEventListener;
 public final class ShaderappEventListener implements GLEventListener {
 
 	private final InputStream input;
+	private int prog;
 
 	public ShaderappEventListener(String shaderpath) {
 		input = ShaderappEventListener.class.getResourceAsStream(shaderpath);
@@ -23,6 +29,43 @@ public final class ShaderappEventListener implements GLEventListener {
 	public void init(GLAutoDrawable drawable) {
 		GL4 gl = drawable.getGL().getGL4();
 
+		// Create shaders
+		int vertshader = gl.glCreateShader(GL4.GL_VERTEX_SHADER),
+				fragshader = gl.glCreateShader(GL4.GL_FRAGMENT_SHADER);
+
+		gl.glShaderSource(vertshader, 1,
+				new String[] { JavaTools.readText(getClass().getResourceAsStream("vertexShader.vs")) }, null);
+		gl.glCompileShader(vertshader);
+		gl.glShaderSource(fragshader, 1, new String[] { JavaTools.readText(input) }, null);
+		gl.glCompileShader(fragshader);
+
+		prog = gl.glCreateProgram();
+		gl.glAttachShader(prog, vertshader);
+		gl.glAttachShader(prog, fragshader);
+		gl.glLinkProgram(prog);
+
+		gl.glUseProgram(prog);
+
+		int vbo;
+		{
+			IntBuffer b = IntBuffer.allocate(1);
+			gl.glGenBuffers(1, b);
+			vbo = b.get(0);
+		}
+		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo);
+		FloatBuffer triangles = FloatBuffer.wrap(new float[] { -1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, 1 });
+		gl.glBufferData(GL.GL_ARRAY_BUFFER, triangles.capacity() * Float.BYTES, triangles, GL.GL_STATIC_DRAW);
+
+		int vao;
+		{
+			IntBuffer i = IntBuffer.allocate(1);
+			gl.glGenVertexArrays(1, i);
+			vao = i.get(0);
+		}
+		gl.glBindVertexArray(vao);
+
+		gl.glVertexAttribPointer(0, 2, GL.GL_FLOAT, false, 0, 0);
+		gl.glEnableVertexAttribArray(0);
 	}
 
 	@Override
@@ -33,8 +76,10 @@ public final class ShaderappEventListener implements GLEventListener {
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
-
-		// Draw code goes here.
+		GL4 gl = drawable.getGL().getGL4();
+		gl.glClearColor(1, .5f, .25f, 1);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6);
 	}
+
 }
