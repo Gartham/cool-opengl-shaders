@@ -81,7 +81,7 @@ public final class ShaderappEventListener implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		GL4 gl = drawable.getGL().getGL4();
-		gl.glClearColor(1, .5f, .25f, 1);
+		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6);
 
