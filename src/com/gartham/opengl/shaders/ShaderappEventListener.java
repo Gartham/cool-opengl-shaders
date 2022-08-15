@@ -10,11 +10,13 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.util.FPSAnimator;
 
 public final class ShaderappEventListener implements GLEventListener {
 
 	private final InputStream input;
 	private int prog;
+	private final long startTime = System.currentTimeMillis();
 
 	public ShaderappEventListener(String shaderpath) {
 		input = ShaderappEventListener.class.getResourceAsStream(shaderpath);
@@ -80,6 +82,10 @@ public final class ShaderappEventListener implements GLEventListener {
 		gl.glClearColor(1, .5f, .25f, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6);
+
+		int loc = gl.glGetUniformLocation(prog, "time");
+		if (loc != -1)// If the time uniform is contained in the loaded shader...
+			gl.glProgramUniform1f(prog, loc, System.currentTimeMillis() - startTime);
 	}
 
 }
