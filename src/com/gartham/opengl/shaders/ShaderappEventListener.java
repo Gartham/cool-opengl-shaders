@@ -1,6 +1,7 @@
 package com.gartham.opengl.shaders;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -10,8 +11,17 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.glu.GLU;
 
 public final class ShaderappEventListener implements GLEventListener {
+
+	private static GLU glu;
+
+	public static void printError(GL gl) {
+		int x = gl.glGetError();
+		while (x != GL.GL_NO_ERROR)
+			System.out.println("Error: " + (glu == null ? glu = GLU.createGLU() : glu).gluErrorString(x));
+	}
 
 	private final InputStream input;
 	private int prog;
@@ -49,6 +59,16 @@ public final class ShaderappEventListener implements GLEventListener {
 		gl.glLinkProgram(prog);
 
 		gl.glUseProgram(prog);
+		
+		ByteBuffer bb = ByteBuffer.allocate(100000);
+		gl.glGetShaderInfoLog(vertshader, 100000, null, bb);
+		for (int i; (i = bb.get()) != 0;)
+			System.out.print((char) i);
+
+		bb = ByteBuffer.allocate(100000);
+		gl.glGetProgramInfoLog(prog, 100000, null, bb);
+		for (int i; (i = bb.get()) != 0;)
+			System.out.print((char) i);
 
 		int vbo;
 		{
